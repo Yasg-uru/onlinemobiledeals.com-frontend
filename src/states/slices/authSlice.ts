@@ -1,4 +1,4 @@
-import { axiosInstance } from "@/helper/axiosInstance";
+
 import { LoginFormValues } from "@/pages/Login";
 import { RegisterFormValues } from "@/pages/register";
 import { authSliceState } from "@/types/authtype";
