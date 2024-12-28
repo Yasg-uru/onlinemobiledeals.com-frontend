@@ -10,7 +10,7 @@ export const addproducts = createAsyncThunk(
   async (AddProductFormValues: AddProductFormValues, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/product/add-product",
+        "https://online-mobile-deals-backend.onrender.com/product/add-product",
         AddProductFormValues,
         {
           withCredentials: true,
@@ -27,7 +27,7 @@ export const deleteproduct = createAsyncThunk(
   async (id: string, { rejectWithValue }) => {
     try {
       const response = await axios.delete(
-        `http://localhost:3000/product/delete-product/${id}`,
+        `https://online-mobile-deals-backend.onrender.com/product/delete-product/${id}`,
         { withCredentials: true }
       );
       return response.data;
@@ -44,7 +44,7 @@ export const updateProduct = createAsyncThunk(
   ) => {
     try {
       const response = await axios.put(
-        `http://localhost:3000/product/update-product/${id}`,
+        `https://online-mobile-deals-backend.onrender.com/product/update-product/${id}`,
         product,
         {
           withCredentials: true,
@@ -61,7 +61,7 @@ export const increamentProductCounts = createAsyncThunk(
   async (productId: string, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `http://localhost:3000/product/increament-views/${productId}`,
+        `https://online-mobile-deals-backend.onrender.com/product/increament-views/${productId}`,
         {},
         {
           withCredentials: true,

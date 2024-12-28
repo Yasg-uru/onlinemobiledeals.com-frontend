@@ -11,7 +11,7 @@ export const Login = createAsyncThunk(
   async (LoginData: LoginFormValues, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/user/sign-in",
+        "https://online-mobile-deals-backend.onrender.com/user/sign-in",
         LoginData,
         { withCredentials: true }
       );
@@ -36,7 +36,7 @@ export const getUserByToken = createAsyncThunk(
   async (token: string, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/user/me/${token}`,
+        `https://online-mobile-deals-backend.onrender.com/user/me/${token}`,
         { withCredentials: true }
       );
       return response.data;

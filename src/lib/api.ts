@@ -11,7 +11,7 @@ export async function fetchProducts(options: FilterOptions): Promise<ProductsRes
   if (options.category) queryParams.append('category', options.category);
   if (options.search) queryParams.append('search', options.search);
 
-  const response = await fetch(`http://localhost:3000/product/get-products?${queryParams}`);
+  const response = await fetch(`https://online-mobile-deals-backend.onrender.com/product/get-products?${queryParams}`);
   if (!response.ok) {
     throw new Error('Failed to fetch products');
   }
