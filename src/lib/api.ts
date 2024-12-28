@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { FilterOptions, ProductsResponse } from '@/types/product';
 
 export async function fetchProducts(options: FilterOptions): Promise<ProductsResponse> {
@@ -11,10 +12,12 @@ export async function fetchProducts(options: FilterOptions): Promise<ProductsRes
   if (options.category) queryParams.append('category', options.category);
   if (options.search) queryParams.append('search', options.search);
 
-  const response = await fetch(`https://online-mobile-deals-backend.onrender.com/product/get-products?${queryParams}`);
-  if (!response.ok) {
-    throw new Error('Failed to fetch products');
-  }
-  return response.json();
+  const response = await axios.get<ProductsResponse>(
+    `https://online-mobile-deals-backend.onrender.com/product/get-products?${queryParams}`
+    ,{
+      withCredentials:true
+    }
+  );
+  
+  return response.data; 
 }
-
