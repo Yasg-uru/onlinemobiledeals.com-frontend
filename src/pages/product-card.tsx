@@ -5,7 +5,7 @@ import {
   Star,
   Trash2,
   Edit,
-//   MousePointer,
+  //   MousePointer,
   MousePointerIcon,
 } from "lucide-react";
 import { useAuthContext } from "@/context/authcontext";
@@ -110,15 +110,16 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
       </CardContent>
       <CardFooter className="flex flex-col gap-2">
-        <Button className="w-full" onClick={() => handleClick(product._id)}>
-          <a
-            href={product.affiliateLink}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            View on {product.source}
-          </a>
+        <Button
+          className="w-full"
+          onClick={() => {
+            handleClick(product._id); // Record the click
+            window.open(product.affiliateLink, "_blank", "noopener,noreferrer"); // Open the link in a new tab
+          }}
+        >
+          View on {product.source}
         </Button>
+
         {showAdminButtons && (
           <div className="flex w-full gap-2 mt-2">
             <Button
