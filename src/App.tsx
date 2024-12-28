@@ -8,6 +8,7 @@ import { Navbar } from './pages/navbar'
 import LoginPage from './pages/Login'
 
 import Products from './pages/product'
+import { UpdateProductPage } from './pages/updateproduct'
 
 function App() {
  
@@ -19,6 +20,7 @@ function App() {
       <Route path='/add-product' element={<AddProductPage/>}/>
       <Route path='/login' element={<LoginPage/>}/>
       <Route path='/' element={<Products/>}/>
+      <Route path='/update-product/:productId' element={<UpdateProductPage/>} />
       </Routes>
     </BrowserRouter>
   )

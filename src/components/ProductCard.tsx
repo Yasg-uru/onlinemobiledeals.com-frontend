@@ -1,12 +1,14 @@
+import { useState } from 'react';
+import Image from 'next/image';
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Product } from "@/types/product";
-import { Star, Trash2, Edit } from "lucide-react";
+import { Star, Trash2, Edit } from 'lucide-react';
 import { useAuthContext } from "@/context/authcontext";
 import { useAppDispatch } from "@/states/hook";
 import { useToast } from "@/hooks/use-toast";
-import { deleteproduct } from "@/states/slices/productSlice";
-import { useNavigate } from "react-router-dom"; // For client-side navigation
+import { deleteProduct } from "@/states/slices/productSlice";
+import { UpdateProductModal } from './UpdateProductModal';
 
 interface ProductCardProps {
   product: Product;
@@ -16,12 +18,12 @@ export function ProductCard({ product }: ProductCardProps) {
   const { user, isAuthenticated } = useAuthContext();
   const dispatch = useAppDispatch();
   const { toast } = useToast();
-  const navigate = useNavigate(); // Hook for navigation
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
 
   const showAdminButtons = isAuthenticated && user && user.Role === "admin";
 
   const handleDeleteProduct = (id: string) => {
-    dispatch(deleteproduct(id))
+    dispatch(deleteProduct(id))
       .unwrap()
       .then(() => {
         toast({
@@ -32,26 +34,20 @@ export function ProductCard({ product }: ProductCardProps) {
       .catch((error) => {
         toast({
           title: "Failed to delete product",
-          description:
-            error instanceof Error
-              ? error.message
-              : "An unknown error occurred",
+          description: error instanceof Error ? error.message : 'An unknown error occurred',
           variant: "destructive",
         });
       });
-  };
-
-  const handleUpdateProduct = () => {
-    navigate(`/update-product/${product._id}`, { state: { product } }); // Navigate to the update page with product state
   };
 
   return (
     <Card className="w-full max-w-sm mx-auto">
       <CardContent className="p-4">
         <div className="aspect-square relative mb-4">
-          <img
+          <Image
             src={product.images[0]}
             alt={product.title}
+            fill
             className="object-cover rounded-md"
           />
         </div>
@@ -92,7 +88,7 @@ export function ProductCard({ product }: ProductCardProps) {
             <Button
               variant="outline"
               className="flex-1"
-              onClick={handleUpdateProduct} // Navigate to UpdateProductPage
+              onClick={() => setIsUpdateModalOpen(true)}
             >
               <Edit className="w-4 h-4 mr-2" />
               Update
@@ -108,6 +104,12 @@ export function ProductCard({ product }: ProductCardProps) {
           </div>
         )}
       </CardFooter>
+      <UpdateProductModal
+        product={product}
+        isOpen={isUpdateModalOpen}
+        onClose={() => setIsUpdateModalOpen(false)}
+      />
     </Card>
   );
 }
+

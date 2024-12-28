@@ -1,4 +1,5 @@
 import { AddProductFormValues } from "@/pages/createproduct";
+import { Product } from "@/types/product";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -36,9 +37,18 @@ export const deleteproduct = createAsyncThunk(
 );
 export const updateProduct = createAsyncThunk(
   "product/update",
-  async (data, { rejectWithValue }) => {
+  async (
+    { id, product }: { id: string; product: any },
+    { rejectWithValue }
+  ) => {
     try {
-      const response = await axios.put(``);
+      const response = await axios.put(
+        `http://localhost:3000/product/update-product/${id}`,
+        product,
+        {
+          withCredentials: true,
+        }
+      );
       return response.data;
     } catch (error) {
       return rejectWithValue("failed to update product please try again later");
