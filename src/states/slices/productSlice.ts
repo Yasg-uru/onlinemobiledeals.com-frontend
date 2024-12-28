@@ -1,3 +1,4 @@
+import { axiosInstance } from "@/helper/axiosInstance";
 import { AddProductFormValues } from "@/pages/createproduct";
 import { Product } from "@/types/product";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
@@ -52,6 +53,24 @@ export const updateProduct = createAsyncThunk(
       return response.data;
     } catch (error) {
       return rejectWithValue("failed to update product please try again later");
+    }
+  }
+);
+export const increamentProductCounts = createAsyncThunk(
+  "product/increament",
+  async (productId: string, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:3000/product/increament-views/${productId}`,
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.log("this is a error of the increament count :", error);
+      return rejectWithValue("product increament failed");
     }
   }
 );

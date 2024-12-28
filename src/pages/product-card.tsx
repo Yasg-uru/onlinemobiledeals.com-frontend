@@ -5,7 +5,10 @@ import { Star, Trash2, Edit } from "lucide-react";
 import { useAuthContext } from "@/context/authcontext";
 import { useAppDispatch } from "@/states/hook";
 import { useToast } from "@/hooks/use-toast";
-import { deleteproduct } from "@/states/slices/productSlice";
+import {
+  deleteproduct,
+  increamentProductCounts,
+} from "@/states/slices/productSlice";
 import { useNavigate } from "react-router-dom"; // For client-side navigation
 
 interface ProductCardProps {
@@ -44,7 +47,24 @@ export function ProductCard({ product }: ProductCardProps) {
   const handleUpdateProduct = () => {
     navigate(`/update-product/${product._id}`, { state: { product } }); // Navigate to the update page with product state
   };
-
+  const handleClick = (id: string) => {
+    dispatch(increamentProductCounts(id))
+      .unwrap()
+      .then(() => {
+        toast({
+          title: "🎉 Click Recorded!",
+          description:
+            "Thanks for showing interest in this product. Your action is valuable!",
+          variant: "default",
+        });
+      })
+      .catch((error) => {
+        toast({
+          title: error,
+          variant: "destructive",
+        });
+      });
+  };
   return (
     <Card className="w-full max-w-sm mx-auto">
       <CardContent className="p-4">
@@ -78,7 +98,7 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
       </CardContent>
       <CardFooter className="flex flex-col gap-2">
-        <Button className="w-full" asChild>
+        <Button className="w-full" onClick={() => handleClick(product._id)}>
           <a
             href={product.affiliateLink}
             target="_blank"
