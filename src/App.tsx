@@ -7,6 +7,8 @@ import LoginPage from "./pages/Login";
 import Products from "./pages/product";
 import { UpdateProductPage } from "./pages/updateproduct";
 import { useAuthContext } from "./context/authcontext";
+import RegisterPage from "./pages/register";
+import VerifyOTP from "./pages/otp";
 
 function App() {
   const { user, isAuthenticated } = useAuthContext();
@@ -18,6 +20,8 @@ function App() {
           <Route path="/add-product" element={<AddProductPage />} />
         )}
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/verify-otp/:email" element={<VerifyOTP/>}/>
         <Route path="/" element={<Products />} />
         <Route
           path="/update-product/:productId"

@@ -1,4 +1,6 @@
+import { axiosInstance } from "@/helper/axiosInstance";
 import { LoginFormValues } from "@/pages/Login";
+import { RegisterFormValues } from "@/pages/register";
 import { authSliceState } from "@/types/authtype";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
@@ -42,6 +44,36 @@ export const getUserByToken = createAsyncThunk(
       return response.data;
     } catch (error) {
       return rejectWithValue("please login to continue");
+    }
+  }
+);
+export const Register = createAsyncThunk(
+  "auth/getuserbytoken",
+  async (data: RegisterFormValues, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `https://online-mobile-deals-backend.onrender.com/user/register`,
+        data,
+        { withCredentials: true }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue("please login to continue");
+    }
+  }
+);
+export const verifyOtp = createAsyncThunk(
+  "auth/verifyotp",
+  async ({email,code}:{email:string;code:string}, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `https://online-mobile-deals-backend.onrender.com/user/verify-code`,{
+          email,code
+        }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue("please enter correct otp");
     }
   }
 );

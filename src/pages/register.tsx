@@ -20,15 +20,19 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-//   CardFooter,
+  //   CardFooter,
 } from "@/components/ui/card";
 import * as z from "zod";
 import { useAppDispatch } from "@/states/hook";
-import { Login } from "@/states/slices/authSlice";
-import { useToast } from "@/hooks/use-toast";
-import { Link } from "react-router-dom";
 
-export const loginSchema = z.object({
+import { useToast } from "@/hooks/use-toast";
+import { Register } from "@/states/slices/authSlice";
+import { useNavigate } from "react-router-dom";
+
+export const registerSchema = z.object({
+  username: z.string().min(3, {
+    message: "Username must be at least 3 characters long.",
+  }),
   email: z.string().email({
     message: "Please enter a valid email address.",
   }),
@@ -37,36 +41,38 @@ export const loginSchema = z.object({
   }),
 });
 
-export type LoginFormValues = z.infer<typeof loginSchema>;
+export type RegisterFormValues = z.infer<typeof registerSchema>;
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const dispatch = useAppDispatch();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+const navigate=useNavigate();
 
-
-  const form = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<RegisterFormValues>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
+      username: "",
       email: "",
       password: "",
     },
   });
 
-  function onSubmit(values: LoginFormValues) {
+  function onSubmit(values: RegisterFormValues) {
     setIsLoading(true);
-    dispatch(Login(values))
+    dispatch(Register(values))
       .unwrap()
       .then(() => {
         toast({
-          title: "Login Success",
-          description: "You have successfully logged in",
+          title: "Registration Success",
+          description: "You have successfully registered.",
         });
+        navigate(`/verify-otp/${values.email}`)
       })
       .catch(() => {
         toast({
-          title: "Login Failed",
-          description: "Invalid credentials",
+          title: "Registration Failed",
+          description: "Something went wrong.",
           variant: "destructive",
         });
       })
@@ -80,13 +86,26 @@ export default function LoginPage() {
       <Card className="w-[350px]">
         <CardHeader>
           <div className="flex justify-between items-center">
-            <CardTitle>Login</CardTitle>
+            <CardTitle>Register</CardTitle>
           </div>
-          <CardDescription>Enter your credentials to login</CardDescription>
+          <CardDescription>Create your account</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Username</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter your username" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="email"
@@ -117,16 +136,9 @@ export default function LoginPage() {
                   </FormItem>
                 )}
               />
-              
               <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Logging in..." : "Login"}
+                {isLoading ? "Registering..." : "Register"}
               </Button>
-              <p className="text-center text-sm mt-4">
-                Don’t have an account?{' '}
-                <Link to="/register" className="text-primary hover:underline">
-                  Register here
-                </Link>
-              </p>
             </form>
           </Form>
         </CardContent>
