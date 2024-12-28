@@ -1,6 +1,6 @@
-import { axiosInstance } from "@/helper/axiosInstance";
+// import { axiosInstance } from "@/helper/axiosInstance";
 import { AddProductFormValues } from "@/pages/createproduct";
-import { Product } from "@/types/product";
+// import { Product } from "@/types/product";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -76,9 +76,9 @@ export const increamentProductCounts = createAsyncThunk(
 );
 const productSlice = createSlice({
   name: "product",
-  initialState: {},
+  initialState,
   reducers: {},
-  extraReducers(builder) {},
+  // extraReducers(builder) {},
 });
 export const {} = productSlice.actions;
 export default productSlice.reducer;

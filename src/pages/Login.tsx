@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTheme } from "next-themes";
-import { Moon, Sun } from "lucide-react";
+// import { useTheme } from "next-themes";
+// import { Moon, Sun } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -20,7 +20,7 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-  CardFooter,
+//   CardFooter,
 } from "@/components/ui/card";
 import * as z from "zod";
 import { useAppDispatch } from "@/states/hook";

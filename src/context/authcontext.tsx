@@ -3,7 +3,6 @@ import { useAppDispatch, useAppSelector } from "@/states/hook";
 import { getUserByToken } from "@/states/slices/authSlice";
 import { User } from "@/types/user";
 import { createContext, useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 interface AuthContextType {
   user: User | null;
@@ -22,7 +21,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const { user: User } = useAppSelector((state) => state.auth);
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [token, setToken] = useState<string | null>(
+  const [token] = useState<string | null>(
     localStorage.getItem("token")
   );
 

@@ -1,7 +1,13 @@
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Product } from "@/types/product";
-import { Star, Trash2, Edit } from "lucide-react";
+import {
+  Star,
+  Trash2,
+  Edit,
+//   MousePointer,
+  MousePointerIcon,
+} from "lucide-react";
 import { useAuthContext } from "@/context/authcontext";
 import { useAppDispatch } from "@/states/hook";
 import { useToast } from "@/hooks/use-toast";
@@ -76,6 +82,12 @@ export function ProductCard({ product }: ProductCardProps) {
           />
         </div>
         <h3 className="text-lg font-semibold mb-2">{product.title}</h3>
+        <div className="flex items-center space-x-1">
+          <MousePointerIcon className="w-4 h-4 text-gray-500" />
+          <span className="text-sm text-gray-600">
+            {product.clicks} {product.clicks === 1 ? "Click" : "Clicks"}
+          </span>
+        </div>
         <p className="text-sm text-muted-foreground mb-2">
           {product.description}
         </p>

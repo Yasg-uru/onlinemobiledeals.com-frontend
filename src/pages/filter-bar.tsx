@@ -29,7 +29,7 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
           placeholder="Search products..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          onKeyPress={(e) => e.key === "Enter" && handleSearch()}
+          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
         />
       </div>
       <Select
