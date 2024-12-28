@@ -3,10 +3,11 @@ import { Link } from "react-router-dom";
 import { Moon, Sun, Home, Search, PlusCircle, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
+import { useAuthContext } from "@/context/authcontext";
 
 export function Navbar() {
   const { theme, setTheme } = useTheme();
-
+const {isAuthenticated}=useAuthContext()
   return (
     <>
       {/* Desktop Navbar */}
@@ -27,9 +28,15 @@ export function Navbar() {
           >
             Add Product
           </Link>
-          <Link to="/profile" className="text-foreground hover:text-primary">
-            Profile
-          </Link>
+          {!isAuthenticated && <Link to={`/login`}>
+            <Button
+              variant="outline"
+              className="flex-1"
+              
+            >
+              
+              Login
+            </Button></Link>}
           <Button
             variant="ghost"
             size="icon"
