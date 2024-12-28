@@ -20,6 +20,31 @@ export const addproducts = createAsyncThunk(
     }
   }
 );
+export const deleteproduct = createAsyncThunk(
+  "prouct/deleteproduct",
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:3000/product/delete-product/${id}`,
+        { withCredentials: true }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue("failed to delete product please try again later");
+    }
+  }
+);
+export const updateProduct = createAsyncThunk(
+  "product/update",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(``);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue("failed to update product please try again later");
+    }
+  }
+);
 const productSlice = createSlice({
   name: "product",
   initialState: {},

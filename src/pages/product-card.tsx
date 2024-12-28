@@ -3,6 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Product } from "@/types/product";
 import { Star, Trash2, Edit } from "lucide-react";
 import { useAuthContext } from "@/context/authcontext";
+import { useAppDispatch } from "@/states/hook";
+import { useToast } from "@/hooks/use-toast";
+import { deleteproduct } from "@/states/slices/productSlice";
+import { error } from "console";
 
 interface ProductCardProps {
   product: Product;
@@ -12,8 +16,25 @@ interface ProductCardProps {
 
 export function ProductCard({ product, onDelete, onUpdate }: ProductCardProps) {
   const { user, isAuthenticated } = useAuthContext();
-  const showAdminButtons = isAuthenticated && user && user.Role === "admin";
+  const dispatch = useAppDispatch();
+  const { toast } = useToast();
 
+  const showAdminButtons = isAuthenticated && user && user.Role === "admin";
+  const handleDeleteProduct = (id: string) => {
+    dispatch(deleteproduct(id))
+      .unwrap()
+      .then(() => {
+        toast({
+          title: "product deleted successfully please refresh page",
+        });
+      })
+      .catch((error) => {
+        toast({
+          title: error,
+          variant: "destructive",
+        });
+      });
+  };
   return (
     <Card className="w-full max-w-sm mx-auto">
       <CardContent className="p-4">
@@ -62,7 +83,7 @@ export function ProductCard({ product, onDelete, onUpdate }: ProductCardProps) {
             <Button
               variant="outline"
               className="flex-1"
-              onClick={() => onUpdate && onUpdate(product)}
+              //   onClick={}
             >
               <Edit className="w-4 h-4 mr-2" />
               Update
@@ -70,7 +91,7 @@ export function ProductCard({ product, onDelete, onUpdate }: ProductCardProps) {
             <Button
               variant="destructive"
               className="flex-1"
-              onClick={() => onDelete && onDelete(product._id)}
+              onClick={() => handleDeleteProduct(product._id)}
             >
               <Trash2 className="w-4 h-4 mr-2" />
               Delete
