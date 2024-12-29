@@ -1,12 +1,13 @@
 import { useToast } from "@/hooks/use-toast";
 import { useAppDispatch, useAppSelector } from "@/states/hook";
-import { getUserByToken } from "@/states/slices/authSlice";
+import { getUserByToken, logout } from "@/states/slices/authSlice";
 import { User } from "@/types/user";
 import { createContext, useContext, useEffect, useState } from "react";
 
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
+  handleLogout: () => void;
 }
 interface AuthProviderProps {
   children: React.ReactNode;
@@ -21,10 +22,25 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const { user: User } = useAppSelector((state) => state.auth);
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [token] = useState<string | null>(
-    localStorage.getItem("token")
-  );
-
+  const [token] = useState<string | null>(localStorage.getItem("token"));
+  const handleLogout = () => {
+    dispatch(logout())
+      .unwrap()
+      .then(() => {
+        toast({
+          title: "logged out successfully",
+        });
+        localStorage.removeItem("token");
+        setUser(null);
+        setIsAuthenticated(false);
+      })
+      .catch((error) => {
+        toast({
+          title: error,
+          variant: "destructive",
+        });
+      });
+  };
   useEffect(() => {
     if (token) {
       dispatch(getUserByToken(token))
@@ -49,7 +65,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [User]);
 
   return (
-    <authContext.Provider value={{ user, isAuthenticated }}>
+    <authContext.Provider value={{ user, isAuthenticated, handleLogout }}>
       {children}
     </authContext.Provider>
   );

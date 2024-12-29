@@ -7,7 +7,7 @@ import { useAuthContext } from "@/context/authcontext";
 
 export function Navbar() {
   const { theme, setTheme } = useTheme();
-const {isAuthenticated}=useAuthContext()
+  const { isAuthenticated, handleLogout } = useAuthContext();
   return (
     <>
       {/* Desktop Navbar */}
@@ -28,15 +28,21 @@ const {isAuthenticated}=useAuthContext()
           >
             Add Product
           </Link>
-          {!isAuthenticated && <Link to={`/login`}>
+          {isAuthenticated ? (
             <Button
-              variant="outline"
+              variant="destructive"
+              onClick={handleLogout}
               className="flex-1"
-              
             >
-              
-              Login
-            </Button></Link>}
+              Logout
+            </Button>
+          ) : (
+            <Link to={`/login`}>
+              <Button variant="outline" className="flex-1">
+                Login
+              </Button>
+            </Link>
+          )}
           <Button
             variant="ghost"
             size="icon"

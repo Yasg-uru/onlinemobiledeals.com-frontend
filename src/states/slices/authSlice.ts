@@ -1,8 +1,11 @@
-
 import { LoginFormValues } from "@/pages/Login";
 import { RegisterFormValues } from "@/pages/register";
 import { authSliceState } from "@/types/authtype";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createSlice,
+ ,
+} from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 
 const initialState: authSliceState = {
@@ -30,6 +33,21 @@ export const Login = createAsyncThunk(
       }
       console.log("this is a error of login", error);
       return rejectWithValue("failed to login please try again later");
+    }
+  }
+);
+export const logout = createAsyncThunk(
+  "auth/logout",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `https://online-mobile-deals-backend.onrender.com/user/logout`,
+        {},
+        { withCredentials: true }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue("failed to logout please try again later");
     }
   }
 );
@@ -64,11 +82,16 @@ export const Register = createAsyncThunk(
 );
 export const verifyOtp = createAsyncThunk(
   "auth/verifyotp",
-  async ({email,code}:{email:string;code:string}, { rejectWithValue }) => {
+  async (
+    { email, code }: { email: string; code: string },
+    { rejectWithValue }
+  ) => {
     try {
       const response = await axios.post(
-        `https://online-mobile-deals-backend.onrender.com/user/verify-code`,{
-          email,code
+        `https://online-mobile-deals-backend.onrender.com/user/verify-code`,
+        {
+          email,
+          code,
         }
       );
       return response.data;
