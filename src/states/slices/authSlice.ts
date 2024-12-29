@@ -1,11 +1,7 @@
 import { LoginFormValues } from "@/pages/Login";
 import { RegisterFormValues } from "@/pages/register";
 import { authSliceState } from "@/types/authtype";
-import {
-  createAsyncThunk,
-  createSlice,
- 
-} from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 
 const initialState: authSliceState = {

@@ -7,7 +7,7 @@ import { useAuthContext } from "@/context/authcontext";
 
 export function Navbar() {
   const { theme, setTheme } = useTheme();
-  const { isAuthenticated, handleLogout } = useAuthContext();
+  const { isAuthenticated, handleLogout,user } = useAuthContext();
   return (
     <>
       {/* Desktop Navbar */}
@@ -22,12 +22,12 @@ export function Navbar() {
           <Link to="/search" className="text-foreground hover:text-primary">
             Search
           </Link>
-          <Link
+         { user && user.Role==='admin' && isAuthenticated && <Link
             to="/add-product"
             className="text-foreground hover:text-primary"
           >
             Add Product
-          </Link>
+          </Link>}
           {isAuthenticated ? (
             <Button
               variant="destructive"
