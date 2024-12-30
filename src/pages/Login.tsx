@@ -20,13 +20,14 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-//   CardFooter,
+  //   CardFooter,
 } from "@/components/ui/card";
 import * as z from "zod";
 import { useAppDispatch } from "@/states/hook";
 import { Login } from "@/states/slices/authSlice";
 import { useToast } from "@/hooks/use-toast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthContext } from "@/context/authcontext";
 
 export const loginSchema = z.object({
   email: z.string().email({
@@ -42,8 +43,9 @@ export type LoginFormValues = z.infer<typeof loginSchema>;
 export default function LoginPage() {
   const dispatch = useAppDispatch();
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const { refreshUser } = useAuthContext();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -62,6 +64,9 @@ export default function LoginPage() {
           title: "Login Success",
           description: "You have successfully logged in",
         });
+        navigate("/");
+        const token = localStorage.getItem("token");
+        token ? refreshUser(token) : null;
       })
       .catch(() => {
         toast({
@@ -117,12 +122,12 @@ export default function LoginPage() {
                   </FormItem>
                 )}
               />
-              
+
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? "Logging in..." : "Login"}
               </Button>
               <p className="text-center text-sm mt-4">
-                Don’t have an account?{' '}
+                Don’t have an account?{" "}
                 <Link to="/register" className="text-primary hover:underline">
                   Register here
                 </Link>

@@ -8,6 +8,7 @@ interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   handleLogout: () => void;
+  refreshUser:(token:string)=>void;
 }
 interface AuthProviderProps {
   children: React.ReactNode;
@@ -41,21 +42,24 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         });
       });
   };
+  const refreshUser=(authToken:string)=>{
+    dispatch(getUserByToken(authToken))
+    .unwrap()
+    .then(() => {
+      setIsAuthenticated(true);
+    })
+    .catch(() => {
+      setIsAuthenticated(false);
+      toast({
+        title: "Login Failed",
+        description: "Invalid credentials",
+        variant: "destructive",
+      });
+    });
+  }
   useEffect(() => {
     if (token) {
-      dispatch(getUserByToken(token))
-        .unwrap()
-        .then(() => {
-          setIsAuthenticated(true);
-        })
-        .catch(() => {
-          setIsAuthenticated(false);
-          toast({
-            title: "Login Failed",
-            description: "Invalid credentials",
-            variant: "destructive",
-          });
-        });
+     refreshUser(token);
     }
   }, [token]);
   useEffect(() => {
@@ -65,7 +69,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [User]);
 
   return (
-    <authContext.Provider value={{ user, isAuthenticated, handleLogout }}>
+    <authContext.Provider value={{ user, isAuthenticated, handleLogout ,refreshUser}}>
       {children}
     </authContext.Provider>
   );
