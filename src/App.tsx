@@ -9,6 +9,7 @@ import { UpdateProductPage } from "./pages/updateproduct";
 import { useAuthContext } from "./context/authcontext";
 import RegisterPage from "./pages/register";
 import VerifyOTP from "./pages/otp";
+import { ProductDetailsPage } from "./pages/product-details";
 
 function App() {
   const { user, isAuthenticated } = useAuthContext();
@@ -27,6 +28,7 @@ function App() {
           path="/update-product/:productId"
           element={<UpdateProductPage />}
         />
+        <Route path="/details/:id" element={<ProductDetailsPage/>} />
       </Routes>
     </BrowserRouter>
   );
