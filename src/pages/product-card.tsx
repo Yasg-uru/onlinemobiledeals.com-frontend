@@ -115,8 +115,9 @@ export function ProductCard({ product }: ProductCardProps) {
             window.open(product.affiliateLink, "_blank", "noopener,noreferrer");
           }}
         >
-          View on {product.source}
+          Buy It on {product.source}
         </Button>
+
         <Button
           variant="outline"
           className="w-full"

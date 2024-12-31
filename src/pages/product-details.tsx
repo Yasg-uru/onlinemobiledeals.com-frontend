@@ -135,7 +135,7 @@ export function ProductDetailsPage() {
                 )
               }
             >
-              View on {product.source}
+              Buy It on {product.source}
             </Button>
             <Button variant="outline" onClick={handleShare}>
               <Share2 className="w-4 h-4 mr-2" />
